@@ -1,32 +1,3 @@
-<<<<<<< HEAD
-<p align="center">
-<img src="https://github.com/kura-labs-org/kuralabs_deployment_1/blob/main/Kuralogo.png">
-</p>
-<h1 align="center">C4_deployment-5<h1> 
-
-Demonstrate your ability to deploy a NEW flask application to an EC2 instance.
-
-- Create a separate GitHub repository for this application 
-
-- Download the files from this repository and upload them to your newly created repository 
-
-- Be sure to follow the deployment instructions from this repository  
-
-- Document your progress in a .md file in your repository. Also, document any issues you may run into and what you did to fix them.
-
-- Make sure your documentation includes these sections:
-  - Purpose
-  - Issues
-  - Steps
-  - System Diagram
-  - Optimization (How would make this deployment more efficient, if you utilize ChatGPT make sure to explain what your prompt was.)
-
-- Lastly, save your documentation and diagram into your repository. Submit your repository link to the LMS
-
-## Deployment instructions Link:
--  Link to instructions: https://github.com/kura-labs-org/c4_deployment-5/blob/main/Deployment-instructions.md
-hello
-=======
 ## <ins>Deployment 5: Run a Jenkins Build for a Banking Application and Deploy it to a second instance using SSH </ins>
 _________________________________________________
 ##### Danielle Davis
@@ -160,7 +131,7 @@ Jenkins build "deploy_5" was successful:
 
 __________________________________________________________________________
 
-### Step 9: Nginx, Gunicorn and Flask Production Environment 
+### Step 9: Gunicorn Production Environment 
 
 __________________________________________________________________________
 
@@ -170,7 +141,6 @@ __________________________________________________________________________
 ![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/urlshortener.jpg)
 
 
-* Nginx acts as a reverse proxy server/middleman between the EC2 instance and the web application. It creates a level of security by buffering requests and only allowing necessary responses from the backend. This can also potentially handle traffic from overloading the web application server.
 * Gunicorn, installed with the code in our application code, acts as a proxy server running on port 8000 adding into the configuration file in Nginx. Gunicorn was installed in the application code changes I made in the Jenkinsfile. The flask application uses python with Gunicorn to create a framework or translation of the python function calls into HTTP responses so that Gunicorn can access the endpoint which was the application URL.
 
    
@@ -180,18 +150,7 @@ __________________________________________________________________________
 
 ______________________________________________________________________________
 
-### <ins>RE-BUILD & DEPLOY:</ins>
-__________________________________________________________________
 
-
-
-![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/rebuild%26alarm.jpg)
-
-&emsp;&emsp;&emsp;&emsp;		As I explained above in my **Issues** section and **Step 9**, I had to rebuild my staging environment in Jenkins for my application to deploy. Re-running the build in Jenkins ensured that all changes and dependencies were refreshed and updated,  as well as that the cache history was cleared out old builds. Most importantly, it ensures a greater level of optimization because by testing in Jenkins, I can identify any errors in the code before pushing the build to the production environment.
-
-&emsp;&emsp;&emsp;&emsp;		For my CloudWatch alarm, I chose to measure the **CPU User Usage** and set the alarm to notify me when the usage gets over 75% and adjusted the percentage to assess the notification process. I saw that the CPU usage went all the way up to 80% after rebuilding the application in Jenkins due to all  the processing power that its using to complete so many different tasks at once.
-
-&emsp;&emsp;&emsp;&emsp;			After running my Jenkins build a few times and installing all the applications on my EC2 instance, it had some connectivity issues. It was performing at a slower pace but still worked well enough for my deployment. Luckily, I used a t2.medium EC2 instance because my usual t2.micro instance would not have been able to manage all the installations I added to it. For the long term, I would need to eventually switch to an instance with a larger capacity just in case I need to install additional applications or perform more complicated processes. This issue is important to note especially for understanding business needs and infrastructure scalability. 
 
 
 _____________________________________________
@@ -212,4 +171,3 @@ In this deployment, two instances are employed: one for the Jenkins server and t
 
 Enhance automation of the AWS Cloud Infrastructure by implementing Terraform modules.
 *Create webhook to automatically trigger Jenkins build when there are changes to my GitHub repository
->>>>>>> 78d233c35f36a517c32e4d6ade377919516cab0d
