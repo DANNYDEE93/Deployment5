@@ -4,7 +4,7 @@ pipeline {
     stage ('Clean') {
       steps {
         sh '''#!/bin/bash
-        ssh ubuntu@10.0.2.217 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
+        ssh ubuntu@10.0.1.15 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup2.sh"
         '''
      }
    }
@@ -12,7 +12,7 @@ pipeline {
   steps {
      sh '''#!/bin/bash
      sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-     ssh ubuntu@10.0.2.217 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/setup2.sh && chmod 744 setup2.sh && ./setup2.sh"
+     ssh ubuntu@10.0.1.15 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/setup2.sh && chmod 744 setup2.sh && ./setup2.sh"
     '''
       }
     }
