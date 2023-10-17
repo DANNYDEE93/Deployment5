@@ -4,16 +4,18 @@ pipeline {
     stage ('Clean') {
       steps {
         sh '''#!/bin/bash
-        scp pkill.sh ubuntu@52.72.132.61:/home/ubuntu/
-        ssh ubuntu@52.72.132.61 'bash -s < pkill.sh'
+        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        scp pkill.sh ubuntu@10.0.2.239:/home/ubuntu/
+        ssh ubuntu@10.0.2.239 'bash -s < pkill.sh'
         '''
      }
    }
  stage ('Deploy') {
   steps {
      sh '''#!/bin/bash
-     scp setup2.sh ubuntu@52.72.132.61:/home/ubuntu/
-     ssh ubuntu@52.72.132.61 'bash -s < setup2.sh'
+     sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+     scp setup2.sh ubuntu@10.0.2.239:/home/ubuntu/
+     ssh ubuntu@10.0.2.239 'bash -s < setup2.sh'
     '''
       }
     }
