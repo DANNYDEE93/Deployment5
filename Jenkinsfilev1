@@ -30,7 +30,7 @@ steps {
 sh '''#!/bin/bash
 sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 scp setup.sh ubuntu@52.72.132.61:/home/ubuntu/
-ssh ubuntu@52.72.132.61 'bash -s < setup.sh'
+ssh ubuntu@52.72.132.61 'bash -S < setup.sh'
 '''
 }
 }
