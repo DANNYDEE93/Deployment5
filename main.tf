@@ -20,16 +20,6 @@ output "vpc_id" {
 }
 
 
-/*resource "aws_ec2_availability_zone_group" "group1" {
-  group_name = "us-east-1a"
-  opt_in_status = "opted-in" 
-}
-
-resource "aws_ec2_availability_zone_group" "group2" {
-  group_name = "us-east-1b" 
-  opt_in_status = "opted-in"
-}
-*/
 
 #create subnets
 resource "aws_subnet" "Pub_sub_a" {
