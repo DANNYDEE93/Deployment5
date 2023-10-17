@@ -6,7 +6,7 @@ pipeline {
         sh '''#!/bin/bash
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         scp pkill.sh ubuntu@52.72.132.61:/home/ubuntu/
-        ssh ubuntu@52.72.132.61 'bash -s < pkill.sh'
+        ssh ubuntu@52.72.132.61 'bash -S < pkill.sh'
         '''
      }
    }
@@ -15,7 +15,7 @@ pipeline {
      sh '''#!/bin/bash
      sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
      scp setup2.sh ubuntu@52.72.132.61:/home/ubuntu/
-     ssh ubuntu@52.72.132.61 'bash -s < setup2.sh'
+     ssh ubuntu@52.72.132.61 'bash -S < setup2.sh'
     '''
       }
     }
