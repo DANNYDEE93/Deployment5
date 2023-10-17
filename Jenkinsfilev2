@@ -5,7 +5,7 @@ pipeline {
       steps {
         sh '''#!/bin/bash
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-        ssh ubuntu@10.0.2.239 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/pkill.sh && chmod 744 pkill.sh && ./pkill.sh"
+        ssh ubuntu@52.72.132.61 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/pkill.sh && chmod 744 pkill.sh && ./pkill.sh"
         '''
      }
    }
@@ -13,7 +13,7 @@ pipeline {
   steps {
      sh '''#!/bin/bash
      sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-     ssh ubuntu@10.0.2.239 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup2.sh && chmod 744 setup2.sh && ./setup2.sh"
+     ssh ubuntu@52.72.132.61 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup2.sh && chmod 744 setup2.sh && ./setup2.sh"
     '''
       }
     }
