@@ -29,7 +29,7 @@ stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
 sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-ssh ubuntu@10.0.2.239 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
+ssh ubuntu@52.72.132.61 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
 '''
 }
 }
