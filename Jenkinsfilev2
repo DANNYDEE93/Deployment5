@@ -4,14 +4,16 @@ pipeline {
     stage ('Clean') {
       steps {
         sh '''#!/bin/bash
-        echo "command to run the pkill.sh"
+        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        ssh ubuntu@54.91.93.26 'bash s < /home/ubuntu/pkill.sh
         '''
      }
    }
  stage ('Deploy') {
   steps {
      sh '''#!/bin/bash
-     echo "command to run the setup2.sh"
+     sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+     ssh ubuntu@54.91.93.26 'bash s < /home/ubuntu/setup2.sh
     '''
       }
     }
