@@ -28,8 +28,8 @@ junit 'test-reports/results.xml'
 stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
-sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-ssh ubuntu@52.72.132.61 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
+scp setup.sh ubuntu@52.72.132.61:/home/ubuntu/
+ssh ubuntu@52.72.132.61 'bash -s < setup.sh'
 '''
 }
 }
