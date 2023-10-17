@@ -28,7 +28,8 @@ junit 'test-reports/results.xml'
 stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
-echo "command to run the setup.sh"
+sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+ssh ubuntu@54.91.93.26 'bash s < /home/ubuntu/setup.sh
 '''
 }
 }
