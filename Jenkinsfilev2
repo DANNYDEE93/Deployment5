@@ -4,7 +4,7 @@ pipeline {
     stage ('Clean') {
       steps {
         sh '''#!/bin/bash
-        ssh ubuntu@10.0.2.217 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/setup.sh && chmod 744 setup.sh && ./setup.sh"
+        ssh ubuntu@10.0.2.217 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
         '''
      }
    }
