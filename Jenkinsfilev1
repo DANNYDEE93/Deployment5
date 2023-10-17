@@ -30,7 +30,7 @@ steps {
 sh '''#!/bin/bash
 ip_file=/var/lib/jenkins/ip_address.txt
 ip_address=$(cat "$ip_file")
-ssh ubuntu@10.0.2.217 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
+ssh ubuntu@10.0.2.239 "curl -O https://raw.githubusercontent.com/DANNYDEE93/Deployment5/main/setup.sh && chmod 744 setup.sh && ./setup.sh"
 '''
 }
 }
