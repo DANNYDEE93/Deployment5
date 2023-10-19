@@ -122,10 +122,7 @@ a new deployment process*
 *Deploy stage: Utilizes **scp** and **ssh** to copy and run setup2.sh script on web application server to create new deployment process*
 
 *Change HTML file and re-deployed web applicaiton: Edited **home.html** file and changed home page message font color to green*
-____________________________________________________________________
 
-
-![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/urlshortener.jpg)
 
 _____________________________________________
 
