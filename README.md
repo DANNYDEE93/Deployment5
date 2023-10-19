@@ -1,17 +1,17 @@
-## <ins>Deployment 5: Run a Jenkins Build for a Banking Application and Deploy it to a second instance using SSH </ins>
+## <ins>Deployment 5: Using Terraform to Create Infrastructure  </ins>
 _________________________________________________
 ##### Danielle Davis
 ##### October 15, 2023
 ______________________________________
 ### <ins>PURPOSE:</ins>
 ___________________
-&emsp;&emsp;&emsp;&emsp;	SSHing to a separate server for application deployment.
-
-Previously, we manually built, tested, and deployed our web application on a single server. In our updated deployment process, we utilize Terraform to create the infrastructure. However, we now build and test the application on one server before SSHing into a second server for the deployment process.
-
+In previous deployments, I've used one server to deploy my web applications. In this current deployment, instead of manually building, testing, and deploying on one server, I utilized Terraform to automate the creating of an infrastructure for two servers-- one for building and testing and the other for deploying a retail banking web applicaiton. This was done by SSHing from the application server with Jenkins into the web server that had the most updated version and dependencies of python. 
+___________________________________
 ### <ins>ISSUES:</ins>
-___________________
-*Most of the challenges revolved around the development process, including writing and testing code, identifying bugs, and debugging code within the Terraform files, as well as making necessary edits in the Jenkinsfiles and setup files
+__________________________________
+*main.tf: It was difficult coding and including all the necessary resource blocks. The default route table wasn't connecting to the internet gateway because I needed to include route table association resource block in order to connect it to an internet gateway.
+*Jenkinsfile: I didn't realize that it couldn't read both files. I had to specify the Jenkinsfile name in the script path.
+*Deployment Process: After successful test in Jenkins, my server was still unable to serve up the web applicaiton. 
 
 
 ### <ins> **STEPS FOR WEB APPLICATION DEPLOYMENT** </ins>
@@ -20,138 +20,112 @@ _____________________________________________________________________________
 ### Step 1: Create terraform file:
 __________________________________________________________________________
 	
-* Terraform is a great tool to automate the creation of infrastructure 
-* Use terraform to automate the creation of a VPC and the necessary dependencies, along with a web and application server provisioned through 2 different instances in the public subnet.
-* See main.tf file here
+* Terraform is a great tool to automate the building of your applicaiton infrastructure instead of manually creating new instances with different installations separately. For this applicaition, I wrote a terraform file script in VS code (see here). I created a main.tf file with defined variables and scripts for installing Jenkins to build and test my deployment [see script here(https://github.com/DANNYDEE93/Deployment5/blob/main/main.tf)] on one server and installed Python packages [script here (https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh)] on the second server using **apt** to automate the web application's set up process and automates the installation of dependencies for the python virtual environment. Including these scripts in the user data allowed me to automate their execution when terraform creates the instances that served as my application and web server. I also used a third server installed with VS code and Terraform. My main.tf file created an infrastructure that included: 
 
-* Automate the Building of the Application Infrastructure
-For this application infrastructure, we want:
+*1 VPC: virtual private cloud to house the infrastructure elements*
+*2 Availability Zones: chosen by referring back to region in the subnets resource*
+*2 Public Subnets & 2 EC2 Instances in each subnet*
+*1 Route Table: with route table association resource block to connect route table to subnets and internet gateway(an unlisted requirement in order for instances to properly connect to the internet)
+*1 Security Group (with ports: 22 and 8000, and 8080)*
 
+Terraform init: to initialize terraform and the backend configurations
+Terraform plan: to show exactly what will be created when applied
+Terraform apply: to execute infrastructure script
 
-* 1 VPC
-2 Availability Zones
-2 Public Subnets
-2 EC2 Instances
-1 Route Table
-2 Security Group 
-  -one with ports: 22 and 8000
-  -another with ports: 22 and 8080
-To automate the construction of the application infrastructure, employ an instance equipped with VS Code and Terraform. The main.tf and variables.tf files, define the resources to be created and declare variables. Additionally, Terraform enables the execution of installation scripts. In the case of one instance, an installation script was utilized for installing Jenkins.
-
-Jenkins
-
-Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
 
 ______________________________________________________________________________
-### Step 2: Git commits
+### Step 2: Git commits & File Changes 
 __________________________________________________________________________
 
-* I used git code through remote repository in VS code provisioned on a separate instance and made changes to the Jenkinsfile in a second branch to double check the changes before adding, committing, and pushing those changes to my local repository on Github.
+* I used git code through remote repository in VS code provisioned on a separate instance and made changes to the Jenkinsfilev1 and Jenkinsv2 to ssh into the second instance in order to send the necessary dependencies from the applicaiton server to the web server. I also made changes to the pkill.sh and setup.sh scripts. This was done in a second branch to check changes before merging to the main branch and pushing to my local repository on Github.
   
 * Add GitHub URL in config file to give code editor permission to update my local repo. 
-
-	
-![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/dep4remoterepo.jpg)
 _______________________________________________________________________
 
-<ins> **Additions to application files through VS code editor** </ins>
+**Jenkinsfilev1 & Jenkinsfilev2**
+Utilized commands: 
+	-to bypass ssh authenticaion configurations
+ 	-to ssh into my web server
+  	-to download and run the pkill.sh, setup.sh, and setup2.sh scripts for the Jenkins build, test and deploy stages
+**pkill.sh**: searches for and checks that Gunicorn is running within application code and file all running processes by PID and kills them to stop Gunicorn processes without disrupting other running processes to ensure a stable environment for the web application
+**Setup.sh**: creates and activates python virtual environment, clone github repository and **cd** into Deployment directory, install python dependencies, install and start Gunicorn server. Also run load_data.py and database.py with pauses in between commands to give the server time to download and import necessary data from the json file database.  
+**Setup2.sh**: similar to setup.sh file but also removes old, existing code for my deployment with already existing python virtual environment. 
 
-The changes I made to the Jenkinsfiles includes the dependencies to sustain the virtual environment for the build stage, save the test stage results, and delete old builds and running processes attached to them. The script also installs dependencies for Gunicorn and Flask applications to run as a HTTP web server that runs python applications. The Gunicorn server can then run as a daemon or an automated dormant background process to handle client requests when necessary, preventing the server from getting overwhelmed.
+_________________________________________________________________________________
+### Step 3: Establish an SSH Connection from the application server to the web application server
+_____________________________________________________________________
+My first instance or application server has Jenkins and python packages to start the deployment process after testing its stability, while my second instance only has python packages, leaving more space for the server to handle the execution of the web application server.  In order to run the scripts to deploy the web applicaiton, an SSH connection needs to be established between the servers so we need to test it as the Jenkins User account on the Jenkins/appication server into the Ubuntu user account on the web applicaiton server.
+
+**Commands to establish SSH Connection as Jenkins user:**
+
+#create password for Jenkins account
+**sudo passwd jenkins**
+#sign into jenkins account
+**su jenkins**
+#allows password authentication for ssh configuration[need to exchange public keys between servers
+**sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config**
+#restart ssh configuration 
+**sudo systemctl restart sshd**
+#generate the public key to /var/lib/jenkins/.ssh/id_rsa.pub (default folder)
+**ssh-keygen**
+
+*Copy the public key from the file id_rsa.pub*
+*Paste the key in /home/ubuntu/.ssh/authorized_keys file in the web application server*
+*As the Jenkins user in the applicaiton server, run the command below to test the SSH connection into the web application server:*
+**ssh ubuntu@ip_address**
+
+![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/ssh%20connection.png)
+
+*Run [software.sh(https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh)] installation script as the ubuntu user in both instances for python virtual environment and package dependencies to run my python banking web application to be used with Flask and deployed with Gunicorn. 
+
+_______________________________________________________
+### Step 4: Configure and Run Jenkins Build
+__________________________________________________________
+
+Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins in my previous deployment here [deployment4(https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins)]
+
+**app.py**: utilizes Flask for generating the web page, uses SQLAlchemy to connect with SQLite database, and uses rest APIs to render necessary information for customers, accounts, transactions, etc. of a banking web application.
+**test_app.py**: imports the Flask app object to test the home page route, check that the web application server is running correctly and responds with a 200 success code
+
+![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/initial%20deployment%20test.png)
+
+_____________________________________________________
+### Step 5: Gunicorn Production Environment on Web Application Server
+__________________________________________________________________________
+
+* Gunicorn, installed in our application code, acts as my web application server running on port 8000 through the pkill.sh script and python scripts in my repo. The flask application, installed through the app.py and load_data.py scripts, uses python with Gunicorn to create a framework or translation of the python function calls into HTTP responses so that Gunicorn can access the endpoint
+* Copy and paste public ip address and port 8000 (this port is necessary to access Gunicorn server) in a new browser to run the deployment through the nginx extension that we installed on the web application server or endpoint <ip_address:8000>
 
 ___________________________________________
 <ins> **Initial Deployment** </ins>
 ________________________________________
 
-**Jenkinsfile1**
+ **Jenkinsfilev1:**
 
+*Build Stage: Installs and prepares python virtual environment*
+
+*Test Stage: Installs, runs and archives testing and log reports*
+
+*Deploy stage: Utilizes **scp** to copy setup.sh[explained in **Step 2** script file to web server, **ssh** into the web server and runs the script, installs dependencies for web application, and includes host key authentication bypass*
+
+*Reminder stage: Confirms the application was deployed on web server*
+ 
 ___________________________________________
 <ins> **Second Deployment** </ins>
 ___________________________________________
 
-**Jenkinsfile2**
-**Setup2.sh**
-**Change HTML file**
+**Jenkinsfilev2:**
 
-* When a **git pull** and **git push** those changes from the remote repo to the local repo that will be connected to Jenkins for my build.
+*Clean Stage: Utilizes **scp** and **ssh** to copy and run pkill.sh script on web application server to delete and clean running processes from old deployments to avoid conflicts when starting 
+a new deployment process*
 
+*Deploy stage: Utilizes **scp** and **ssh** to copy and run setup2.sh script on web application server to create new deployment process*
 
-_________________________________________________________________________________
-
-
-
-
-### Step 3: Establish an SSH Connection from the Jenkins Server to the Application Server
-While the Jenkins Server initiates the deployment process for the application, it does not perform the deployment itself. Instead, it establishes an SSH connection to the application server and runs a script to deploy the application. To accomplish this, an SSH connection is established using a Jenkins User account.
-
-**Command to establish SSH Connection as Jenkins user: **
-
-#In the Jenkins Server run the following bash commands
-sudo passwd jenkins
-sudo su - jenkins -s /bin/bash
-ssh-keygen  #This will generate the public key to /var/lib/jenkins/.ssh/id_rsa.pub
-#Copy the public key from the file id_rsa.pub
-#Paste the key in /home/ubuntu/.ssh/authorized_keys file
-#Then in the Jenkins server as a Jenkins user, run the command below to test the SSH connection
-ssh ubuntu@application_server_ip_address
-
-SSH Connection was made:pngg
-
-
-________________________________________________________________________
-
-### Step 4:
-
-In both instances, as an ubuntu user, install the following:
-
-sudo apt update
-sudo apt install -y software-properties-common 
-sudo add-apt-repository -y ppa:deadsnakes/ppa 
-sudo apt install -y python3.7 
-sudo apt install -y python3.7-venv
-
-
-
-### Step 5:
-
-Step #7 Configure Jenkins Build and Run Build
-
-
-Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins:: here [deployment4]
-
-Jenkins Build: In Jenkins create a build "deploy_5" for the Banking application from GitHub Repository https://github.com/LamAnnieV/deployment_4.git and run the build. This build consists of four stages: The Build, the Test, the Clean, and the Deploy stages. [See the importance of these stages [here]]
-
-Please refer back to "Edit to the Jenkinsfilev1" and "Edit to the setup.sh" above for changes.
-
-Result
-
-Jenkins build "deploy_5" was successful:
-
-
-
-
-__________________________________________________________________________
-
-### Step 9: Gunicorn Production Environment 
-
-__________________________________________________________________________
-
-* Copy and paste public ip address and port 8000 (this port is necessary to access Gunicorn server) in a new browser to run the deployment through the nginx extension that we installed on the server <ip_address:8000>
+*Change HTML file and re-deployed web applicaiton: Edited **home.html** file and changed home page message font color to green*
+____________________________________________________________________
 
 
 ![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/urlshortener.jpg)
-
-
-* Gunicorn, installed with the code in our application code, acts as a proxy server running on port 8000 adding into the configuration file in Nginx. Gunicorn was installed in the application code changes I made in the Jenkinsfile. The flask application uses python with Gunicorn to create a framework or translation of the python function calls into HTTP responses so that Gunicorn can access the endpoint which was the application URL.
-
-   
-__________________________________________________________________________
-
-
-
-______________________________________________________________________________
-
-
-
 
 _____________________________________________
 
@@ -159,15 +133,18 @@ _____________________________________________
 _________________________________________________
 
 
-![](https://github.com/DANNYDEE93/Deployment4/blob/main/static/newdep4.jpg)
+![system_diagram](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/Deployment5_sd.jpg)
 
 _________________________________________________
 
 ### <ins>OPTIMIZATION:</ins>
 _____________________________________________
-Jenkins was particularly important in the optimization and error handling for the deployment. Below are some ways I could have had better optimization with my deployment:
 
-In this deployment, two instances are employed: one for the Jenkins server and the other for the Web application server. Both instances are placed in the public subnet, as they need to be accessible via the internet. The Jenkins server is accessible through port 8080 for utilizing the Jenkins GUI interface, while the application server is accessible by our banking customers through port 8000. Thus, both subnets must remain public for these connections to function as required.
+*The Jenkins server is accessible through port 8080, while the web server is accessible by our banking customers through port 8000. Both instances are placed in the public subnet, but it is not necessary. The Jenkins or application server should be placed in a private subnet with a map to a NACL in a terraform file because we don't want users to access the installations and dependencies we need to ensure the stability of the web application server. The web application or web server should stay in the public subnet so that users can have reliable access to it.
 
-Enhance automation of the AWS Cloud Infrastructure by implementing Terraform modules.
+*Having one server for building and testing and the other server for deplying ensures that there wont't be performance issues from running out of disk space on the instances. Having everything done on one server like in previous deployments, can cause issues if this server goes down decreasing user experience and makes it harder for the development team to troubleshoot.
+
+Jenkins was particularly important in the optimization and error handling for the deployment. Some other ways I could have had better optimization with my deployment:
+
+*Enhance automation of the AWS Cloud Infrastructure by implementing Terraform modules: including private subnet for the application/ Jenkins server 
 *Create webhook to automatically trigger Jenkins build when there are changes to my GitHub repository
