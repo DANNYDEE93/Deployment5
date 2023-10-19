@@ -31,6 +31,8 @@ __________________________________________________________________________
 * 1 Route Table: with route table association resource block to connect route table to subnets and internet gateway(an unlisted requirement in order for instances to properly connect to the internet)
 
 * 1 Security Group (with ports: 22 and 8000, and 8080)*
+
+This was done through my third instance that had [vs code](https://github.com/DANNYDEE93/Deployment5/blob/main/vscode.sh) and [terraform](https://github.com/DANNYDEE93/Deployment5/blob/main/installterraform.sh) installed on it.
 _____________________________________________________________________
 **Terraform init:** to initialize terraform and the backend configurations
 
