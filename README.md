@@ -22,15 +22,15 @@ __________________________________________________________________________
 	
 * Terraform is a great tool to automate the building of your applicaiton infrastructure instead of manually creating new instances with different installations separately. For this applicaition, I wrote a terraform file script in VS code (see here). I created a main.tf file with defined variables and scripts for installing. For the first instance, user data was connected to Jenkins script to build and test my deployment with the [jenkins.sh script](https://github.com/DANNYDEE93/Deployment5/blob/main/main.tf) here and installed Python packages and depencies through [software.sh script](https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh) here. On the second server, the code uses **apt** to automate the web application's set up process and automates the installation of dependencies for the python virtual environment. Including these scripts in the user data allowed me to automate their execution when terraform creates the instances that served as my application and web server. I also used a third server installed with VS code and Terraform. My main.tf file created an infrastructure that included: 
 
-*1 VPC: virtual private cloud to house the infrastructure elements*
+* 1 VPC: virtual private cloud to house the infrastructure elements*
 
-*2 Availability Zones: chosen by referring back to region in the subnets resource*
+* 2 Availability Zones: chosen by referring back to region in the subnets resource*
 
-*2 Public Subnets & 2 EC2 Instances in each subnet*
+* 2 Public Subnets & 2 EC2 Instances in each subnet*
 
-*1 Route Table: with route table association resource block to connect route table to subnets and internet gateway(an unlisted requirement in order for instances to properly connect to the internet)
+* 1 Route Table: with route table association resource block to connect route table to subnets and internet gateway(an unlisted requirement in order for instances to properly connect to the internet)
 
-*1 Security Group (with ports: 22 and 8000, and 8080)*
+* 1 Security Group (with ports: 22 and 8000, and 8080)*
 _____________________________________________________________________
 Terraform init: to initialize terraform and the backend configurations
 
