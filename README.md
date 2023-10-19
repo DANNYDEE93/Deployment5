@@ -76,13 +76,13 @@ My first instance or application server has Jenkins and python packages to start
 
 ![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/ssh%20connection.png)
 
-*Run [software.sh(https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh)] installation script as the ubuntu user in both instances for python virtual environment and package dependencies to run my python banking web application to be used with Flask and deployed with Gunicorn. 
+*Run [software.sh](https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh) installation script as the ubuntu user in both instances for python virtual environment and package dependencies to run my python banking web application to be used with Flask and deployed with Gunicorn. 
 
 _______________________________________________________
 ### Step 4: Configure and Run Jenkins Build
 __________________________________________________________
 
-Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins in my previous deployment here [deployment4(https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins)]
+Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins in my previous deployment [here](https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins)
 
 **app.py**: utilizes Flask for generating the web page, uses SQLAlchemy to connect with SQLite database, and uses rest APIs to render necessary information for customers, accounts, transactions, etc. of a banking web application.
 **test_app.py**: imports the Flask app object to test the home page route, check that the web application server is running correctly and responds with a 200 success code
