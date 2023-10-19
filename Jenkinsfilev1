@@ -29,7 +29,7 @@ stage ('Deploy') {
 steps {
 sh '''#!/bin/bash
 scp -o StrictHostKeyChecking=no setup.sh ubuntu@52.72.132.61:/home/ubuntu/
-ssh ubuntu@52.72.132.61 'bash -s < setup.sh'
+ssh ubuntu@54.160.192.91 'bash -s < setup.sh'
 '''
 }
 }
