@@ -34,6 +34,8 @@ __________________________________________________________________________
 _____________________________________________________________________
 Terraform init: to initialize terraform and the backend configurations
 
+Terraform validate: to validate that the terraform file is configured properly
+
 Terraform plan: to show exactly what will be created when applied
 
 Terraform apply: to execute infrastructure script
