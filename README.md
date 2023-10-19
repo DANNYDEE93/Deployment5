@@ -23,16 +23,20 @@ __________________________________________________________________________
 * Terraform is a great tool to automate the building of your applicaiton infrastructure instead of manually creating new instances with different installations separately. For this applicaition, I wrote a terraform file script in VS code (see here). I created a main.tf file with defined variables and scripts for installing Jenkins to build and test my deployment [see script here](https://github.com/DANNYDEE93/Deployment5/blob/main/main.tf) on one server and installed Python packages [script here](https://github.com/DANNYDEE93/Deployment5/blob/main/software.sh) on the second server using **apt** to automate the web application's set up process and automates the installation of dependencies for the python virtual environment. Including these scripts in the user data allowed me to automate their execution when terraform creates the instances that served as my application and web server. I also used a third server installed with VS code and Terraform. My main.tf file created an infrastructure that included: 
 
 *1 VPC: virtual private cloud to house the infrastructure elements*
+
 *2 Availability Zones: chosen by referring back to region in the subnets resource*
+
 *2 Public Subnets & 2 EC2 Instances in each subnet*
+
 *1 Route Table: with route table association resource block to connect route table to subnets and internet gateway(an unlisted requirement in order for instances to properly connect to the internet)
+
 *1 Security Group (with ports: 22 and 8000, and 8080)*
-
+_____________________________________________________________________
 Terraform init: to initialize terraform and the backend configurations
+
 Terraform plan: to show exactly what will be created when applied
+
 Terraform apply: to execute infrastructure script
-
-
 ______________________________________________________________________________
 ### Step 2: Git commits & File Changes 
 __________________________________________________________________________
@@ -47,8 +51,11 @@ Utilized commands:
 	-to bypass ssh authenticaion configurations
  	-to ssh into my web server
   	-to download and run the pkill.sh, setup.sh, and setup2.sh scripts for the Jenkins build, test and deploy stages
+
 **pkill.sh**: searches for and checks that Gunicorn is running within application code and file all running processes by PID and kills them to stop Gunicorn processes without disrupting other running processes to ensure a stable environment for the web application
+
 **Setup.sh**: creates and activates python virtual environment, clone github repository and **cd** into Deployment directory, install python dependencies, install and start Gunicorn server. Also run load_data.py and database.py with pauses in between commands to give the server time to download and import necessary data from the json file database.  
+
 **Setup2.sh**: similar to setup.sh file but also removes old, existing code for my deployment with already existing python virtual environment. 
 
 _________________________________________________________________________________
