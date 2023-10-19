@@ -32,13 +32,13 @@ __________________________________________________________________________
 
 * 1 Security Group (with ports: 22 and 8000, and 8080)*
 _____________________________________________________________________
-Terraform init: to initialize terraform and the backend configurations
+**Terraform init:** to initialize terraform and the backend configurations
 
-Terraform validate: to validate that the terraform file is configured properly
+**Terraform validate:** to validate that the terraform file is configured properly
 
-Terraform plan: to show exactly what will be created when applied
+**Terraform plan:** to show exactly what will be created when applied
 
-Terraform apply: to execute infrastructure script
+**Terraform apply:** to execute infrastructure script
 ______________________________________________________________________________
 ### Step 2: Git commits & File Changes 
 __________________________________________________________________________
@@ -63,7 +63,7 @@ Utilized commands:
 _________________________________________________________________________________
 ### Step 3: Establish an SSH Connection from the application server to the web application server
 _____________________________________________________________________
-My first instance or application server has Jenkins and python packages to start the deployment process after testing its stability, while my second instance only has python packages, leaving more space for the server to handle the execution of the web application server.  In order to run the scripts to deploy the web applicaiton, an SSH connection needs to be established between the servers so we need to test it as the Jenkins User account on the Jenkins/appication server into the Ubuntu user account on the web applicaiton server.
+* My first instance or application server has Jenkins and python packages to start the deployment process after testing its stability, while my second instance only has python packages, leaving more space for the server to handle the execution of the web application server.  In order to run the scripts to deploy the web applicaiton, an SSH connection needs to be established between the servers so we need to test it as the Jenkins User account on the Jenkins/appication server into the Ubuntu user account on the web applicaiton server.
 
 **Commands to establish SSH Connection as Jenkins user:**
 
@@ -98,7 +98,7 @@ _______________________________________________________
 ### Step 4: Configure and Run Jenkins Build
 __________________________________________________________
 
-Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins in my previous deployment [here](https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins)
+* Create Jenkins **Multibranch Pipeline** Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranch pipeline, and how to create a token to link GitHub repository with the application code to Jenkins. Instructions can be found [here](https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins) in my previous deployment.
 
 **app.py**: utilizes Flask for generating the web page, uses SQLAlchemy to connect with SQLite database, and uses rest APIs to render necessary information for customers, accounts, transactions, etc. of a banking web application.
 
@@ -112,7 +112,7 @@ __________________________________________________________________________
 
 * Gunicorn, installed in our application code, acts as my web application server running on port 8000 through the pkill.sh script and python scripts in my repo. The flask application, installed through the app.py and load_data.py scripts, uses python with Gunicorn to create a framework or translation of the python function calls into HTTP responses so that Gunicorn can access the endpoint
 
-* Copy and paste public ip address and port 8000 (this port is necessary to access Gunicorn server) in a new browser to run the deployment through the nginx extension that we installed on the web application server or endpoint <ip_address:8000>
+* Copy and paste public ip address and port 8000 (this port is necessary to access Gunicorn server) in a new browser to run the deployment through the nginx extension that we installed on the web application server or endpoint **<ip_address:8000>**
 
 ___________________________________________
 <ins> **Initial Deployment** </ins>
@@ -120,13 +120,13 @@ ________________________________________
 
  **Jenkinsfilev1:**
 
-*Build Stage: Installs and prepares python virtual environment*
+***Build Stage:** Installs and prepares python virtual environment*
 
-*Test Stage: Installs, runs and archives testing and log reports*
+***Test Stage:** Installs, runs and archives testing and log reports*
 
-*Deploy stage: Utilizes **scp** to copy setup.sh[explained in **Step 2** script file to web server, **ssh** into the web server and runs the script, installs dependencies for web application, and includes host key authentication bypass*
+***Deploy stage**: Utilizes **scp** to copy setup.sh[explained in **Step 2** script file to web server, **ssh** into the web server and runs the script, installs dependencies for web application, and includes host key authentication bypass*
 
-*Reminder stage: Confirms the application was deployed on web server*
+***Reminder stage:** Confirms the application was deployed on web server*
  
 ___________________________________________
 <ins> **Second Deployment** </ins>
@@ -134,10 +134,10 @@ ___________________________________________
 
 **Jenkinsfilev2:**
 
-*Clean Stage: Utilizes **scp** and **ssh** to copy and run pkill.sh script on web application server to delete and clean running processes from old deployments to avoid conflicts when starting 
+***Clean Stage:** Utilizes **scp** and **ssh** to copy and run pkill.sh script on web application server to delete and clean running processes from old deployments to avoid conflicts when starting 
 a new deployment process*
 
-*Deploy stage: Utilizes **scp** and **ssh** to copy and run setup2.sh script on web application server to create new deployment process*
+***Deploy stage:** Utilizes **scp** and **ssh** to copy and run setup2.sh script on web application server to create new deployment process*
 
 *Change HTML file and re-deployed web applicaiton: Edited **home.html** file and changed home page message font color to green*
 
@@ -159,7 +159,7 @@ _____________________________________________
 
 *Having one server for building and testing and the other server for deplying ensures that there wont't be performance issues from running out of disk space on the instances. Having everything done on one server like in previous deployments, can cause issues if this server goes down decreasing user experience and makes it harder for the development team to troubleshoot.
 
-Jenkins was particularly important in the optimization and error handling for the deployment. Some other ways I could have had better optimization with my deployment:
+*Jenkins was particularly important in the optimization and error handling for the deployment. Some other ways I could have had better optimization with my deployment:
 
 *Enhance automation of the AWS Cloud Infrastructure by implementing Terraform modules: including private subnet for the application/ Jenkins server 
 
