@@ -72,7 +72,7 @@ My first instance or application server has Jenkins and python packages to start
 *Copy the public key from the file id_rsa.pub*
 *Paste the key in /home/ubuntu/.ssh/authorized_keys file in the web application server*
 *As the Jenkins user in the applicaiton server, run the command below to test the SSH connection into the web application server:*
-**ssh ubuntu@ip_address**
+**ssh ubuntu@public_ip_address**
 
 ![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/ssh%20connection.png)
 
