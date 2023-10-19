@@ -67,18 +67,25 @@ My first instance or application server has Jenkins and python packages to start
 
 #create password for Jenkins account
 **sudo passwd jenkins**
+
 #sign into jenkins account
 **su jenkins**
+
 #allows password authentication for ssh configuration[need to exchange public keys between servers
 **sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config**
+
 #restart ssh configuration 
 **sudo systemctl restart sshd**
+
 #generate the public key to /var/lib/jenkins/.ssh/id_rsa.pub (default folder)
 **ssh-keygen**
-
+_____________________________________________________________________________
 *Copy the public key from the file id_rsa.pub*
+
 *Paste the key in /home/ubuntu/.ssh/authorized_keys file in the web application server*
+
 *As the Jenkins user in the applicaiton server, run the command below to test the SSH connection to ensure that the Jenkinsfile will allow me to ssh, copy and run files onto the web application server :*
+
 **ssh ubuntu@public_ip_address**
 
 ![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/ssh%20connection.png)
@@ -92,6 +99,7 @@ __________________________________________________________
 Create Jenkins Multibranch Pipeline Build for staging environment: Find instructions in previous deployment to access Jenkins in the web browser, create a multibranh pipeline, and how to create a token to link GitHub repository with the application code to Jenkins in my previous deployment [here](https://github.com/DANNYDEE93/Deployment4#step-8--create-staging-environment-in-jenkins)
 
 **app.py**: utilizes Flask for generating the web page, uses SQLAlchemy to connect with SQLite database, and uses rest APIs to render necessary information for customers, accounts, transactions, etc. of a banking web application.
+
 **test_app.py**: imports the Flask app object to test the home page route, check that the web application server is running correctly and responds with a 200 success code
 
 ![](https://github.com/DANNYDEE93/Deployment5/blob/main/static/images/initial%20deployment%20test.png)
@@ -101,6 +109,7 @@ _____________________________________________________
 __________________________________________________________________________
 
 * Gunicorn, installed in our application code, acts as my web application server running on port 8000 through the pkill.sh script and python scripts in my repo. The flask application, installed through the app.py and load_data.py scripts, uses python with Gunicorn to create a framework or translation of the python function calls into HTTP responses so that Gunicorn can access the endpoint
+
 * Copy and paste public ip address and port 8000 (this port is necessary to access Gunicorn server) in a new browser to run the deployment through the nginx extension that we installed on the web application server or endpoint <ip_address:8000>
 
 ___________________________________________
@@ -130,7 +139,6 @@ a new deployment process*
 
 *Change HTML file and re-deployed web applicaiton: Edited **home.html** file and changed home page message font color to green*
 
-
 _____________________________________________
 
 ### <ins>SYSTEM DIAGRAM:</ins>
@@ -144,6 +152,7 @@ _________________________________________________
 ### <ins>OPTIMIZATION:</ins>
 _____________________________________________
 
+
 *The Jenkins server is accessible through port 8080, while the web server is accessible by our banking customers through port 8000. Both instances are placed in the public subnet, but it is not necessary. The Jenkins or application server should be placed in a private subnet with a map to a NACL in a terraform file because we don't want users to access the installations and dependencies we need to ensure the stability of the web application server. The web application or web server should stay in the public subnet so that users can have reliable access to it.
 
 *Having one server for building and testing and the other server for deplying ensures that there wont't be performance issues from running out of disk space on the instances. Having everything done on one server like in previous deployments, can cause issues if this server goes down decreasing user experience and makes it harder for the development team to troubleshoot.
@@ -151,4 +160,5 @@ _____________________________________________
 Jenkins was particularly important in the optimization and error handling for the deployment. Some other ways I could have had better optimization with my deployment:
 
 *Enhance automation of the AWS Cloud Infrastructure by implementing Terraform modules: including private subnet for the application/ Jenkins server 
+
 *Create webhook to automatically trigger Jenkins build when there are changes to my GitHub repository
