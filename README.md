@@ -1,4 +1,4 @@
-## <ins>Deployment 5: Using Terraform to Create Infrastructure  </ins>
+## <ins>Deployment 5: Auotmate Infrastructure Build with Terraform/ Automate Installation & Execution of Scripts for Deployment   </ins>
 _________________________________________________
 ##### Danielle Davis
 ##### October 15, 2023
